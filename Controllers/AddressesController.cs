@@ -19,8 +19,6 @@ namespace CustomerManagement.Controllers
         {
             _context = context;
         }
-
-        // GET: api/Addresses
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
@@ -29,6 +27,17 @@ namespace CustomerManagement.Controllers
                 return NotFound();
             }
             return await _context.Addresses.ToListAsync();
+        }
+
+        // GET: api/Addresses/customer/2
+        [Route("customer/{customerId}"), HttpGet]
+        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses(int customerId)
+        {
+            if (_context.Addresses == null)
+            {
+                return NotFound();
+            }
+            return await _context.Addresses.Where<Address>(ad => ad.CustomerId == customerId).ToListAsync();
         }
 
         // GET: api/Addresses/5
